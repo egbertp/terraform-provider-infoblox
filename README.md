@@ -64,7 +64,7 @@ resource "infoblox_cname_record" "test" {
 * Learn how to mock for `go test`
 * Configureable TTLs
 * Add comment field to record:txt
-* Go module support
+* ~~Go module support~~
 * Extend functionality to support other Infoblox objects
 
 ## License

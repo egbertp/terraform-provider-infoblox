@@ -331,3 +331,10 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+
+target/*
+!target/.gitkeep
+
+# Don't commit build artifact produced via ./build.sh
+terraform-provider-infoblox
