@@ -52,6 +52,8 @@ jobs:
           command: |
             ls -l
             pwd
+            ls -l target
+            pwd
             TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || true) # Don't fail if no Git tag is found.
             [ -z "$TAG" ] && export TAG="v0.0.0" # If no Git tag is found, set version to v0.0.0
             COMMIT_HASH=`git rev-parse --short=8 HEAD 2>/dev/null`
