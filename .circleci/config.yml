@@ -60,7 +60,7 @@ jobs:
             echo "GITHUB_TOKEN holds ${GITHUB_TOKEN}"
             echo "CIRCLE_PROJECT_USERNAME holds ${CIRCLE_PROJECT_USERNAME}"
             echo "CIRCLE_PROJECT_REPONAME holds ${CIRCLE_PROJECT_REPONAME}"
-            ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME -replace -prerelease $TAG target/
+            ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME -replace $TAG target/
           working_directory: /go/src/github.com/egbertp/terraform-provider-infoblox
 
 workflows:
