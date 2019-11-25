@@ -2,7 +2,7 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hiscox/terraform-provider-infoblox/infoblox"
+	"github.com/egbertp/terraform-provider-infoblox/infoblox"	
 )
 
 func Provider() *schema.Provider {

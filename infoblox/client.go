@@ -4,7 +4,7 @@ package infoblox
 import (
 	"crypto/tls"
 	"errors"
-	"github.com/go-resty/resty"
+	"gopkg.in/resty.v1"
 	"log"
 	"time"
 )

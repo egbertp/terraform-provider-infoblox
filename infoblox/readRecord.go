@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/go-resty/resty"
+	"gopkg.in/resty.v1"
 	"log"
 	"strings"
 )

@@ -2,9 +2,9 @@ package resources
 
 import (
 	"fmt"
-	"github.com/go-resty/resty"
+	"github.com/egbertp/terraform-provider-infoblox/infoblox"
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hiscox/terraform-provider-infoblox/infoblox"
+	"gopkg.in/resty.v1"
 	"log"
 )
 
