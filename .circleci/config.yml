@@ -1,0 +1,80 @@
+version: 2.1
+
+executors:
+  golang-builder:
+    docker:
+      - image: circleci/golang:1.13.4-buster
+    working_directory: /go/src/github.com/egbertp/terraform-provider-infoblox
+
+jobs:
+  build:
+    executor: golang-builder
+    steps:
+      - checkout
+      - run:
+          name: Install build dependencies
+          command: |
+            go get -u github.com/mitchellh/gox
+      - run:
+          name: Fmt
+          command: | 
+            go fmt ./...
+      - run:
+          name: Vet
+          command: | 
+            go vet ./...            
+      - add_ssh_keys
+      - run:
+          name: compile
+          command: |
+            ls -l
+            pwd
+            ./release.sh
+      # Persist the specified paths (workspace/echo-output) into the workspace for use in downstream job. 
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is 
+          # taken to be the root directory of the workspace.
+          root: /go/src/github.com/egbertp
+          # Must be relative path from root
+          paths:
+            - terraform-provider-infoblox
+  release:
+    executor: golang-builder
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /go/src/github.com/egbertp
+      - run:
+          name: Install release dependencies
+          command: |
+            go get -u github.com/tcnksm/ghr
+      - run: 
+          command: |
+            ls -l
+            pwd
+            TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || true) # Don't fail if no Git tag is found.
+            [ -z "$TAG" ] && export TAG="v0.0.0" # If no Git tag is found, set version to v0.0.0
+            COMMIT_HASH=`git rev-parse --short=8 HEAD 2>/dev/null`
+            echo "TAG variable holds value $TAG"
+            echo "COMMIT_HASH variable holds value $COMMIT_HASH"
+            echo "GITHUB_TOKEN holds ${GITHUB_TOKEN}"
+            echo "CIRCLE_PROJECT_USERNAME holds ${CIRCLE_PROJECT_USERNAME}"
+            echo "CIRCLE_PROJECT_REPONAME holds ${CIRCLE_PROJECT_REPONAME}"
+            ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME -replace -prerelease $TAG target/
+          working_directory: /go/src/github.com/egbertp/terraform-provider-infoblox
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+      - release_approval:
+          requires:
+            - build
+          type: approval
+      - release:
+          requires: 
+            - release_approval
