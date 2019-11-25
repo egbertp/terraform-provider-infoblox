@@ -6,7 +6,7 @@ Note that if someone manually updates/creates a record in Infoblox terraform wil
 
 ## Build the Provider
 
-Go version 1.12.7
+Go version 1.13.3
 
 ```shell
 go get -d
